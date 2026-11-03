@@ -28,7 +28,7 @@ export const SITE_SETTINGS = {
   formspreeFormId: "REPLACE-ME",
 
   /* --- Contact details (shown in the top bar and footer) -------------- */
-  email: "",   // TODO: add the PTA email address (leave "" to hide it)
+  email: "ardennehighschoolpta@yahoo.com",   // TODO: add the PTA email address (leave "" to hide it)
   phones: ["(876) 978-1112", "(876) 790-3074"],
   address: "Ardenne High School, 10 Ardenne Road, Kingston 10, Jamaica",  // TODO: confirm address
 
