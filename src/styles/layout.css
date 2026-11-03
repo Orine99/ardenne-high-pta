@@ -1,0 +1,376 @@
+/* =====================================================================
+   LAYOUT.CSS — parts that appear on EVERY page
+   ---------------------------------------------------------------------
+   Contents:
+     1. Top info bar      (phone numbers + WhatsApp, very top of page)
+     2. Header & menu     (logo, navigation, mobile hamburger menu)
+     3. Page banner       (the blue title strip on About & Donate pages)
+     4. Footer
+   ===================================================================== */
+
+
+/* ---------------------------------------------------------------------
+   1. TOP INFO BAR
+   --------------------------------------------------------------------- */
+.topbar {
+  background: var(--blue-dark);   /* navy strip */
+  color: #dfe6ff;                 /* pale text */
+  font-size: 0.875rem;            /* smaller text */
+}
+.topbar .container {
+  display: flex;                  /* items sit in a row */
+  justify-content: space-between; /* left group and right group pushed apart */
+  align-items: center;
+  gap: 1rem;
+  min-height: 40px;
+  flex-wrap: wrap;                /* wraps onto two lines on small screens */
+}
+.topbar a {
+  color: #fff;
+  text-decoration: none;
+}
+.topbar a:hover {
+  color: var(--gold);             /* gold on hover */
+}
+.topbar-group {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+}
+.topbar-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;                    /* gap between the icon and text */
+}
+.topbar svg {
+  width: 16px;
+  height: 16px;
+}
+@media (max-width: 640px) {       /* on phones... */
+  .topbar-phone-2 { display: none; } /* ...hide the second phone number to save space */
+}
+
+
+/* ---------------------------------------------------------------------
+   2. HEADER & NAVIGATION
+   --------------------------------------------------------------------- */
+.site-header {
+  position: sticky;               /* header stays stuck to the top when scrolling */
+  top: 0;
+  z-index: 100;                   /* stays above page content */
+  background: rgba(255, 255, 255, 0.97); /* almost-solid white */
+  backdrop-filter: blur(8px);     /* blurs content scrolling behind it */
+  border-bottom: 1px solid var(--line);
+  transition: box-shadow 0.25s;
+}
+.site-header.is-scrolled {        /* class added by main.js once you scroll down */
+  box-shadow: 0 6px 20px rgba(15, 35, 102, 0.08);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* logo left, menu right */
+  height: var(--header-height);
+  gap: 1rem;
+}
+
+/* Logo + school name */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--blue-dark);
+}
+.brand img {
+  width: 58px;                    /* crest size in the header */
+  height: auto;
+}
+.brand-text {
+  display: flex;
+  flex-direction: column;         /* stacks the two lines of text */
+  line-height: 1.1;
+}
+.brand-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+.brand-sub {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+
+/* Menu links */
+.main-nav ul {
+  list-style: none;               /* removes bullet points */
+  display: flex;                  /* links in a row */
+  align-items: center;
+  gap: 0.25rem;
+}
+.main-nav a {
+  display: block;
+  padding: 0.55rem 0.85rem;
+  text-decoration: none;
+  font-weight: 700;
+  color: var(--ink);
+  border-radius: var(--radius-small);
+  transition: background 0.2s, color 0.2s;
+}
+.main-nav a:hover {
+  background: var(--blue-light);
+  color: var(--blue);
+}
+.main-nav a[aria-current="page"] { /* the page you are currently on */
+  color: var(--blue);
+  box-shadow: inset 0 -3px 0 var(--gold); /* gold underline */
+  border-radius: 0;
+}
+.main-nav .nav-donate {           /* the gold Donate button in the menu */
+  display: inline-flex;           /* keeps the heart icon and text on one line */
+  margin-left: 0.5rem;
+  padding: 0.55rem 1.25rem;
+  min-height: 0;
+}
+.main-nav .nav-donate:hover {
+  background: var(--gold-dark);
+  color: var(--blue-dark);
+}
+
+/* Hamburger button (only visible on small screens) */
+.nav-toggle {
+  display: none;                  /* hidden on big screens */
+  width: 48px;
+  height: 48px;
+  border: 0;
+  background: var(--blue-light);
+  border-radius: var(--radius-small);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+.nav-toggle span,
+.nav-toggle span::before,
+.nav-toggle span::after {         /* the three lines of the hamburger icon */
+  display: block;
+  width: 22px;
+  height: 2.5px;
+  background: var(--blue-dark);
+  border-radius: 2px;
+  position: relative;
+  transition: transform 0.25s, background 0.25s;
+}
+.nav-toggle span::before,
+.nav-toggle span::after {
+  content: "";
+  position: absolute;
+}
+.nav-toggle span::before { top: -7px; } /* top line */
+.nav-toggle span::after  { top: 7px; }  /* bottom line */
+
+/* When the menu is open, turn the hamburger into an "X" */
+.nav-toggle[aria-expanded="true"] span { background: transparent; }
+.nav-toggle[aria-expanded="true"] span::before { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span::after  { transform: translateY(-7px) rotate(-45deg); }
+
+/* --- Mobile menu: screens narrower than 960px --- */
+@media (max-width: 960px) {
+  .nav-toggle {
+    display: inline-flex;         /* show the hamburger button */
+  }
+  .main-nav {
+    position: absolute;           /* menu drops down under the header */
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 16px 30px rgba(15, 35, 102, 0.12);
+    display: none;                /* hidden until the hamburger is tapped */
+  }
+  .main-nav.is-open {
+    display: block;               /* main.js adds "is-open" when tapped */
+  }
+  .main-nav ul {
+    flex-direction: column;       /* links stacked vertically */
+    align-items: stretch;
+    padding: 0.75rem 1.25rem 1.25rem;
+  }
+  .main-nav a {
+    padding: 0.9rem 0.5rem;       /* bigger tap targets on phones */
+    border-bottom: 1px solid var(--line);
+  }
+  .main-nav a[aria-current="page"] {
+    box-shadow: inset 4px 0 0 var(--gold); /* gold bar on the left instead of underline */
+    padding-left: 1rem;
+  }
+  .main-nav .nav-donate {
+    display: flex;                /* full-width button in the phone menu */
+    margin: 1rem 0 0;
+    border-bottom: 0;
+    text-align: center;
+  }
+}
+@media (max-width: 420px) {
+  .brand-name { font-size: 1rem; } /* slightly smaller school name on tiny phones */
+  .brand img  { width: 48px; }
+}
+
+
+/* ---------------------------------------------------------------------
+   3. PAGE BANNER (top of About and Donate pages)
+   --------------------------------------------------------------------- */
+.page-banner {
+  position: relative;
+  color: #fff;
+  padding-block: clamp(4rem, 10vw, 7rem); /* tall on desktop, shorter on phones */
+  background:
+    linear-gradient(110deg, rgba(15, 35, 102, 0.94) 0%, rgba(28, 63, 174, 0.82) 60%, rgba(28, 63, 174, 0.55) 100%), /* blue tint over the photo */
+    var(--banner-image, none) center / cover no-repeat; /* the photo — chosen per page below */
+  overflow: hidden;
+}
+.page-banner::after {              /* the gold stripe along the bottom edge */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 6px;
+  background: var(--gold);
+}
+.page-banner h1 {
+  color: #fff;
+  max-width: 760px;
+}
+.page-banner p {
+  max-width: 620px;
+  margin-top: 1rem;
+  font-size: 1.15rem;
+  color: #e3e9ff;
+}
+.page-banner .eyebrow {
+  color: var(--gold);
+}
+/* Which photo each page banner uses (paths starting with / point into the public folder) */
+.banner-about  { --banner-image: url("/images/gallery/paint-day-team-mural.jpg"); }
+.banner-donate { --banner-image: url("/images/gallery/parents-month-students.jpg"); }
+
+.page-banner .banner-actions {
+  margin-top: 1.75rem;             /* space above the button in the banner */
+}
+.breadcrumb {                      /* "Home / About" trail */
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  color: #c9d4ff;
+}
+.breadcrumb a {
+  color: #fff;
+}
+
+
+/* ---------------------------------------------------------------------
+   4. FOOTER
+   --------------------------------------------------------------------- */
+.site-footer {
+  background: var(--blue-dark);
+  color: #c9d4ff;                  /* soft blue text on navy */
+  padding-top: 4rem;
+  border-top: 6px solid var(--gold); /* gold line across the top */
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr; /* 4 columns; the first is a bit wider */
+  gap: 2.5rem;
+}
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; } /* 2 columns on tablets */
+}
+@media (max-width: 560px) {
+  .footer-grid { grid-template-columns: 1fr; }     /* 1 column on phones */
+}
+.footer-brand img {
+  width: 84px;
+  margin-bottom: 1rem;
+}
+.footer-motto {
+  font-family: var(--font-heading);
+  font-style: italic;
+  color: var(--gold);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+.site-footer h3 {
+  color: #fff;
+  font-size: 1.05rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.site-footer ul {
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+.site-footer a {
+  color: #fff;
+  text-decoration: none;
+}
+.site-footer a:hover {
+  color: var(--gold);
+  text-decoration: underline;
+}
+.footer-contact li {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+}
+.footer-contact svg {
+  width: 18px;
+  height: 18px;
+  margin-top: 0.3rem;
+  flex-shrink: 0;
+  color: var(--gold);
+}
+.footer-social {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+.footer-social a {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;              /* round icon buttons */
+  display: grid;
+  place-items: center;             /* centres the icon */
+  background: rgba(255, 255, 255, 0.1);
+}
+.footer-social a:hover {
+  background: var(--gold);
+  color: var(--blue-dark);
+}
+.footer-social svg {
+  width: 18px;
+  height: 18px;
+}
+.footer-bottom {
+  margin-top: 3rem;
+  padding-block: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+
+/* ---------------------------------------------------------------------
+   5. 404 PAGE
+   --------------------------------------------------------------------- */
+.not-found-actions {
+  text-align: center;              /* centres the "Back to Home" button */
+}

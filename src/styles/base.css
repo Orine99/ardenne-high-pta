@@ -1,0 +1,305 @@
+/* =====================================================================
+   BASE.CSS — the foundation used by EVERY page
+   ---------------------------------------------------------------------
+   Contents:
+     1. Colour & size variables  (change the brand colours here!)
+     2. Reset                    (removes browser default spacing)
+     3. Typography               (fonts, headings, paragraphs, links)
+     4. Buttons
+     5. Re-usable helpers        (container, section, cards, tags)
+   ===================================================================== */
+
+
+/* ---------------------------------------------------------------------
+   1. VARIABLES
+   "Variables" store a value once so we can reuse it everywhere.
+   Use one like this:  color: var(--blue);
+   Change a value here and the whole site updates.
+   --------------------------------------------------------------------- */
+:root {
+  --blue: #1c3fae;          /* Ardenne royal blue — main brand colour */
+  --blue-dark: #0f2366;     /* deep navy — footer, headings, dark sections */
+  --blue-light: #e8eefc;    /* very pale blue — soft section backgrounds */
+  --gold: #f5c518;          /* Ardenne gold — buttons and highlights */
+  --gold-dark: #d9a900;     /* darker gold — button hover colour */
+  --gold-light: #fff6d1;    /* pale gold — notice banner background */
+  --red: #d7262e;           /* the red cross in the crest — used sparingly */
+  --whatsapp: #1f9d55;      /* WhatsApp green for the WhatsApp buttons */
+
+  --ink: #1b2240;           /* main text colour (dark navy, softer than black) */
+  --ink-soft: #4a5275;      /* lighter text for dates and small print */
+  --line: #dde3f0;          /* thin border lines */
+  --bg: #ffffff;            /* page background */
+  --bg-soft: #f4f6fb;       /* light grey-blue for alternating sections */
+
+  --font-heading: "Fraunces", Georgia, serif;          /* classic serif for headings */
+  --font-body: "Nunito Sans", "Segoe UI", Arial, sans-serif; /* friendly, readable body font */
+
+  --radius: 14px;           /* how rounded the corners of cards are */
+  --radius-small: 8px;      /* smaller rounding for buttons and inputs */
+  --shadow: 0 10px 30px rgba(15, 35, 102, 0.10);  /* soft drop shadow under cards */
+  --max-width: 1180px;      /* widest the page content can stretch */
+  --header-height: 76px;    /* height of the sticky top navigation */
+}
+
+
+/* ---------------------------------------------------------------------
+   2. RESET
+   --------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;   /* padding is counted INSIDE an element's width (easier sizing) */
+  margin: 0;                /* remove the browser's default outside spacing */
+  padding: 0;               /* remove the browser's default inside spacing */
+}
+
+html {
+  scroll-behavior: smooth;                         /* menu links glide down the page instead of jumping */
+  scroll-padding-top: calc(var(--header-height) + 16px); /* stops the sticky header covering section titles */
+}
+
+body {
+  font-family: var(--font-body);  /* use the body font everywhere by default */
+  font-size: 1.0625rem;           /* 17px — slightly large for easy reading (grandparents too!) */
+  line-height: 1.65;              /* space between lines of text */
+  color: var(--ink);              /* default text colour */
+  background: var(--bg);          /* default page colour */
+  -webkit-font-smoothing: antialiased; /* smoother text on Mac/iPhone */
+}
+
+img {
+  max-width: 100%;          /* images never spill outside their box */
+  height: auto;             /* keeps the photo's shape when its width changes */
+  display: block;           /* removes a tiny gap under images */
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;            /* form fields use the same font as the page */
+  color: inherit;           /* ...and the same text colour */
+}
+
+/* Hides content visually but keeps it readable by screen readers */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* "Skip to content" link — appears only when a keyboard user presses Tab */
+.skip-link {
+  position: absolute;       /* taken out of the normal flow */
+  left: 1rem;
+  top: -100px;              /* hidden above the screen... */
+  background: var(--gold);
+  color: var(--blue-dark);
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-small);
+  z-index: 1000;            /* sits on top of everything */
+  font-weight: 700;
+}
+.skip-link:focus {
+  top: 1rem;                /* ...and slides into view when focused */
+}
+
+
+/* ---------------------------------------------------------------------
+   3. TYPOGRAPHY
+   --------------------------------------------------------------------- */
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);  /* headings use the serif font */
+  color: var(--blue-dark);           /* headings are deep navy */
+  line-height: 1.2;                  /* tighter lines for big text */
+  font-weight: 700;                  /* bold */
+}
+
+h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); }   /* clamp(min, preferred, max) = grows with screen size */
+h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); }
+h3 { font-size: 1.3rem; }
+h4 { font-size: 1.1rem; }
+
+p + p {
+  margin-top: 1rem;         /* space between paragraphs that follow each other */
+}
+
+a {
+  color: var(--blue);       /* links are royal blue */
+  text-underline-offset: 3px; /* moves the underline slightly below the text */
+}
+a:hover {
+  color: var(--blue-dark);  /* darker when the mouse is over a link */
+}
+
+/* Visible outline for keyboard users (accessibility) */
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* Small gold label above section titles, e.g. "OUR CALENDAR" */
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 800;         /* extra bold */
+  letter-spacing: 0.14em;   /* spreads the letters apart */
+  text-transform: uppercase; /* ALL CAPS */
+  color: var(--blue);
+  margin-bottom: 0.5rem;
+  padding-left: 2.2rem;     /* makes room for the gold line drawn below */
+  position: relative;       /* lets us position the ::before line */
+}
+.eyebrow::before {          /* the short gold line in front of the label */
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;                 /* vertically centred */
+  width: 1.6rem;
+  height: 3px;
+  background: var(--gold);
+  border-radius: 2px;
+}
+
+
+/* ---------------------------------------------------------------------
+   4. BUTTONS
+   Use:  <a class="btn btn-gold">  or  <button class="btn btn-blue">
+   --------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;     /* lets icon + text sit side by side */
+  align-items: center;      /* vertically centres icon and text */
+  justify-content: center;  /* horizontally centres the content */
+  gap: 0.5rem;              /* space between icon and text */
+  padding: 0.85rem 1.5rem;  /* inside spacing (top/bottom left/right) */
+  min-height: 48px;         /* big enough to tap easily on a phone */
+  border-radius: 999px;     /* fully rounded "pill" shape */
+  border: 2px solid transparent;
+  font-weight: 800;
+  font-size: 1rem;
+  text-decoration: none;    /* no underline on button links */
+  cursor: pointer;          /* hand cursor on hover */
+  transition: background 0.2s, color 0.2s, transform 0.2s, border-color 0.2s; /* smooth hover changes */
+}
+.btn:hover {
+  transform: translateY(-2px); /* lifts slightly when hovered */
+}
+.btn svg {
+  width: 20px;              /* icon size inside buttons */
+  height: 20px;
+  flex-shrink: 0;           /* icon never gets squashed */
+}
+
+.btn-gold {                 /* gold button — main actions like Donate */
+  background: var(--gold);
+  color: var(--blue-dark);
+}
+.btn-gold:hover {
+  background: var(--gold-dark);
+  color: var(--blue-dark);
+}
+
+.btn-blue {                 /* royal blue button */
+  background: var(--blue);
+  color: #fff;
+}
+.btn-blue:hover {
+  background: var(--blue-dark);
+  color: #fff;
+}
+
+.btn-whatsapp {             /* green WhatsApp button */
+  background: var(--whatsapp);
+  color: #fff;
+}
+.btn-whatsapp:hover {
+  background: #16804a;
+  color: #fff;
+}
+
+.btn-outline-light {        /* see-through button with white border (for dark backgrounds) */
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.8);
+  color: #fff;
+}
+.btn-outline-light:hover {
+  background: #fff;
+  color: var(--blue-dark);
+}
+
+.btn-outline {              /* see-through button with blue border (for light backgrounds) */
+  background: transparent;
+  border-color: var(--blue);
+  color: var(--blue);
+}
+.btn-outline:hover {
+  background: var(--blue);
+  color: #fff;
+}
+
+
+/* ---------------------------------------------------------------------
+   5. RE-USABLE HELPERS
+   --------------------------------------------------------------------- */
+
+/* Keeps content centred and not too wide on big screens */
+.container {
+  width: min(100% - 2.5rem, var(--max-width)); /* full width minus side gaps, but never wider than max */
+  margin-inline: auto;      /* centres the box left-to-right */
+}
+
+/* Standard vertical spacing for each page section */
+.section {
+  padding-block: clamp(3.5rem, 8vw, 6rem); /* top & bottom space grows on bigger screens */
+}
+.section-soft {
+  background: var(--bg-soft); /* alternate background so sections are easy to tell apart */
+}
+
+/* Centred section title block */
+.section-head {
+  max-width: 720px;
+  margin: 0 auto 2.75rem;   /* centred with space below */
+  text-align: center;
+}
+.section-head .eyebrow {
+  padding-left: 0;          /* centred labels don't need the side line... */
+}
+.section-head .eyebrow::before {
+  display: none;            /* ...so hide it */
+}
+.section-head p {
+  color: var(--ink-soft);
+  margin-top: 0.75rem;
+}
+
+/* White box with rounded corners and soft shadow */
+.card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--line);
+}
+
+/* Small coloured label, e.g. event categories */
+.tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+
+/* Category colours — used by tags, calendar dots and the legend */
+.cat-meeting    { background: #dbe4ff; color: #1c3fae; } /* PTA meetings: blue */
+.cat-school     { background: #fff1b8; color: #7a5a00; } /* school events: gold */
+.cat-exam       { background: #ffe0e0; color: #a3161d; } /* exams: red */
+.cat-fundraiser { background: #e2d9ff; color: #5130b0; } /* fundraisers: purple */
+.cat-volunteer  { background: #d6f5e3; color: #146b3a; } /* volunteer days: green */

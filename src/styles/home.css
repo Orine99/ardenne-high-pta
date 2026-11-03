@@ -1,0 +1,788 @@
+/* =====================================================================
+   HOME.CSS — styles used ONLY on the Home page (index.html)
+   ---------------------------------------------------------------------
+   Contents (in the same order as the page):
+     1. Notice banner
+     2. Hero (big welcome photo)
+     3. Quick links strip
+     4. Welcome message
+     5. Highlights / stats
+     6. Upcoming events + News
+     7. Calendar
+     8. Gallery (side-scrolling photos + pop-up viewer)
+     9. WhatsApp call-to-action band
+    10. Contact form
+   ===================================================================== */
+
+
+/* ---------------------------------------------------------------------
+   1. NOTICE BANNER  (text comes from data/site-settings.js)
+   --------------------------------------------------------------------- */
+.notice-banner {
+  background: var(--gold);
+  color: var(--blue-dark);
+  font-weight: 700;
+  text-align: center;
+  padding: 0.65rem 1rem;
+  font-size: 0.95rem;
+}
+.notice-banner a {
+  color: var(--blue-dark);
+  margin-left: 0.5rem;
+  font-weight: 800;
+}
+.notice-banner[hidden] {
+  display: none;                  /* hidden when show: false in settings */
+}
+
+
+/* ---------------------------------------------------------------------
+   2. HERO
+   --------------------------------------------------------------------- */
+.hero {
+  position: relative;
+  min-height: min(88vh, 760px);   /* tall, but never more than 760px */
+  display: flex;
+  align-items: center;            /* text vertically centred */
+  color: #fff;
+  padding-block: 5rem 8rem;       /* extra bottom space for the quick-links cards that overlap */
+  background:
+    linear-gradient(100deg, rgba(10, 25, 80, 0.92) 0%, rgba(15, 35, 102, 0.78) 45%, rgba(15, 35, 102, 0.25) 100%), /* dark-blue fade so text is readable */
+    url("/images/hero-school-front.jpg") center 40% / cover no-repeat; /* the school photo */
+}
+.hero-content {
+  max-width: 640px;               /* keeps lines of text short and easy to read */
+}
+.hero .eyebrow {
+  color: var(--gold);
+}
+.hero h1 {
+  color: #fff;
+  margin-bottom: 1.25rem;
+}
+.hero h1 em {
+  font-style: italic;
+  color: var(--gold);             /* gold words in the headline */
+}
+.hero-lead {
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  color: #e6ecff;
+  margin-bottom: 2rem;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;                /* buttons wrap onto new lines on phones */
+  gap: 0.85rem;
+}
+.hero-motto {                     /* small motto badge under the buttons */
+  margin-top: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  font-size: 0.9rem;
+}
+.hero-motto img {
+  width: 40px;
+}
+.hero-motto strong {
+  display: block;
+  color: var(--gold);
+  font-family: var(--font-heading);
+  font-style: italic;
+}
+
+
+/* ---------------------------------------------------------------------
+   3. QUICK LINKS STRIP  (4 cards overlapping the bottom of the hero)
+   --------------------------------------------------------------------- */
+.quick-links {
+  position: relative;
+  margin-top: -4.5rem;            /* pulls the strip up so it overlaps the hero */
+  z-index: 5;                     /* sits on top of the hero */
+}
+.quick-links-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+  overflow: hidden;               /* keeps rounded corners clean */
+}
+@media (max-width: 900px) {
+  .quick-links-grid { grid-template-columns: repeat(2, 1fr); } /* 2 x 2 on tablets/phones */
+}
+.quick-link {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.5rem;
+  text-decoration: none;
+  color: var(--ink);
+  border-right: 1px solid var(--line); /* divider between cards */
+  transition: background 0.2s;
+}
+.quick-link:last-child {
+  border-right: 0;
+}
+.quick-link:hover {
+  background: var(--blue-light);
+  color: var(--ink);
+}
+@media (max-width: 900px) {
+  .quick-link { border-bottom: 1px solid var(--line); }
+}
+@media (max-width: 520px) {
+  .quick-link { flex-direction: column; gap: 0.6rem; padding: 1.15rem; } /* icon above text on phones */
+}
+.quick-link-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--blue);
+  color: var(--gold);
+}
+.quick-link-icon svg {
+  width: 24px;
+  height: 24px;
+}
+.quick-link h3 {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+.quick-link p {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+.quick-link-whatsapp .quick-link-icon { background: var(--whatsapp); color: #fff; }
+.quick-link-donate .quick-link-icon   { background: var(--gold); color: var(--blue-dark); }
+
+
+/* ---------------------------------------------------------------------
+   4. WELCOME MESSAGE
+   --------------------------------------------------------------------- */
+.welcome-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* photo left, text right */
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+}
+@media (max-width: 860px) {
+  .welcome-grid { grid-template-columns: 1fr; } /* stacked on smaller screens */
+}
+.welcome-photo {
+  position: relative;
+}
+.welcome-photo img {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  aspect-ratio: 4 / 3;            /* keeps the photo a neat shape */
+  object-fit: cover;              /* crops instead of stretching */
+  width: 100%;
+}
+.welcome-photo::before {          /* gold block peeking out behind the photo */
+  content: "";
+  position: absolute;
+  inset: 1.25rem -1.25rem -1.25rem 1.25rem; /* offset down and to the right */
+  background: var(--gold);
+  border-radius: var(--radius);
+  z-index: -1;                    /* behind the photo */
+}
+.welcome-text h2 {
+  margin-bottom: 1.25rem;
+}
+.welcome-signoff {
+  margin-top: 1.5rem;
+  font-family: var(--font-heading);
+  font-style: italic;
+  color: var(--blue);
+  font-size: 1.1rem;
+}
+.welcome-text .btn {
+  margin-top: 1.75rem;
+}
+
+
+/* ---------------------------------------------------------------------
+   5. HIGHLIGHTS / STATS
+   --------------------------------------------------------------------- */
+.stats {
+  background: var(--blue);
+  color: #fff;
+  padding-block: 3rem;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  text-align: center;
+}
+@media (max-width: 760px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.stat-number {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1.1;
+}
+.stat-label {
+  font-size: 0.95rem;
+  color: #dfe6ff;
+}
+
+
+/* ---------------------------------------------------------------------
+   6. UPCOMING EVENTS + NEWS  (two columns)
+   --------------------------------------------------------------------- */
+.events-news-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: clamp(2rem, 5vw, 4rem);
+}
+@media (max-width: 900px) {
+  .events-news-grid { grid-template-columns: 1fr; }
+}
+.column-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+.column-head a {
+  font-weight: 800;
+  white-space: nowrap;            /* keeps "See calendar →" on one line */
+}
+
+/* One event row: date block + details */
+.event-list {
+  list-style: none;
+  display: grid;
+  gap: 1rem;
+}
+.event-item {
+  display: flex;
+  gap: 1.15rem;
+  padding: 1.15rem;
+  align-items: flex-start;
+}
+.event-date {                     /* the blue date block, e.g. "19 NOV" */
+  flex-shrink: 0;
+  width: 70px;
+  text-align: center;
+  background: var(--blue);
+  color: #fff;
+  border-radius: var(--radius-small);
+  padding: 0.5rem 0.25rem;
+  line-height: 1.1;
+}
+.event-date .day {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+.event-date .month {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.event-body h3 {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 0.35rem 0 0.25rem;
+}
+.event-meta {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+.event-body p {
+  font-size: 0.95rem;
+  margin-top: 0.35rem;
+}
+.empty-message {                  /* shown when there are no upcoming events */
+  padding: 1.5rem;
+  color: var(--ink-soft);
+}
+
+/* News cards */
+.news-list {
+  display: grid;
+  gap: 1.25rem;
+}
+.news-item {
+  display: grid;
+  grid-template-columns: 150px 1fr; /* small picture + text */
+  gap: 1.15rem;
+  padding: 1rem;
+  align-items: start;
+}
+@media (max-width: 480px) {
+  .news-item { grid-template-columns: 1fr; } /* picture on top on small phones */
+}
+.news-item img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-small);
+}
+.news-date {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+.news-item h3 {
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin: 0.15rem 0 0.35rem;
+}
+.news-item p {
+  font-size: 0.95rem;
+}
+
+
+/* ---------------------------------------------------------------------
+   7. CALENDAR
+   --------------------------------------------------------------------- */
+.calendar {
+  padding: clamp(1rem, 3vw, 2rem);
+}
+.calendar-toolbar {               /* month name + previous/next buttons */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.calendar-title {
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+}
+.calendar-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+.calendar-buttons button {
+  min-width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  border: 2px solid var(--line);
+  background: #fff;
+  cursor: pointer;
+  font-weight: 800;
+  padding: 0 1rem;
+  transition: background 0.2s, border-color 0.2s;
+}
+.calendar-buttons button:hover {
+  border-color: var(--blue);
+  background: var(--blue-light);
+}
+
+/* Colour key under the toolbar */
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+/* The 7-column grid of days */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 days in a week */
+  gap: 4px;
+}
+.calendar-weekday {               /* "Sun Mon Tue ..." row */
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  padding-bottom: 0.4rem;
+}
+.calendar-day {
+  min-height: 96px;               /* tall boxes on desktop so event names fit */
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  padding: 0.4rem;
+  background: #fff;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  overflow: hidden;
+}
+.calendar-day:hover {
+  border-color: var(--blue);
+}
+.calendar-day.is-other-month {    /* days from the previous/next month */
+  background: var(--bg-soft);
+  color: #a3a9c2;
+}
+.calendar-day.is-today .calendar-day-number { /* today's date gets a gold circle */
+  background: var(--gold);
+  color: var(--blue-dark);
+}
+.calendar-day.is-selected {       /* the day you clicked */
+  border-color: var(--blue);
+  background: var(--blue-light);
+  box-shadow: inset 0 0 0 1px var(--blue);
+}
+.calendar-day-number {
+  font-weight: 800;
+  font-size: 0.9rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+.calendar-chip {                  /* small coloured event name inside a day */
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;            /* one line only... */
+  overflow: hidden;
+  text-overflow: ellipsis;        /* ...with "..." if too long */
+}
+@media (max-width: 640px) {       /* on phones: show coloured dots instead of names */
+  .calendar-day {
+    min-height: 52px;
+    align-items: center;
+    padding: 0.25rem;
+  }
+  .calendar-chip {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 0;                 /* hides the text */
+  }
+  .calendar-day-chips {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+.calendar-day-chips {
+  display: grid;
+  gap: 3px;
+}
+
+/* Details box below the calendar for the selected day */
+.calendar-details {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+.calendar-details h3 {
+  margin-bottom: 1rem;
+}
+.calendar-details .event-list {
+  gap: 0.75rem;
+}
+.calendar-details .event-item {
+  background: var(--bg-soft);
+  border-radius: var(--radius-small);
+}
+
+
+/* ---------------------------------------------------------------------
+   8. GALLERY  (photos scroll sideways)
+   --------------------------------------------------------------------- */
+.gallery-wrap {
+  position: relative;
+}
+.gallery-track {
+  display: flex;                  /* photos in one long row */
+  gap: 1rem;
+  overflow-x: auto;               /* lets the row scroll left/right */
+  scroll-snap-type: x mandatory;  /* photos "snap" neatly into place when scrolling */
+  scroll-behavior: smooth;
+  padding: 0.5rem 0.25rem 1.25rem;
+  scrollbar-width: thin;          /* slim scrollbar (Firefox) */
+  scrollbar-color: var(--blue) var(--blue-light);
+}
+.gallery-track::-webkit-scrollbar { height: 8px; }            /* slim scrollbar (Chrome/Safari) */
+.gallery-track::-webkit-scrollbar-track { background: var(--blue-light); border-radius: 8px; }
+.gallery-track::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 8px; }
+
+.gallery-item {
+  flex: 0 0 clamp(250px, 32vw, 380px); /* each photo card's width */
+  scroll-snap-align: start;       /* the snapping point */
+  margin: 0;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: zoom-in;                /* magnifier cursor: click to enlarge */
+  text-align: left;
+}
+.gallery-item img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius);
+  transition: transform 0.35s, box-shadow 0.35s;
+}
+.gallery-item:hover img {
+  transform: scale(1.02);         /* gentle zoom on hover */
+  box-shadow: var(--shadow);
+}
+.gallery-item figcaption,
+.gallery-item span {
+  display: block;
+  margin-top: 0.6rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+/* Round arrow buttons on each side */
+.gallery-arrow {
+  position: absolute;
+  top: calc(50% - 1.5rem);        /* vertically centred on the photos */
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 0;
+  background: #fff;
+  color: var(--blue-dark);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+  transition: background 0.2s;
+}
+.gallery-arrow:hover {
+  background: var(--gold);
+}
+.gallery-arrow svg { width: 22px; height: 22px; }
+.gallery-arrow-prev { left: -14px; }
+.gallery-arrow-next { right: -14px; }
+@media (max-width: 640px) {
+  .gallery-arrow { display: none; } /* phones swipe instead of using arrows */
+}
+
+/* Pop-up photo viewer (lightbox) */
+.lightbox {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  max-width: min(92vw, 1100px);
+  max-height: 92vh;
+  margin: auto;
+}
+.lightbox::backdrop {             /* the dark layer behind the photo */
+  background: rgba(8, 18, 55, 0.88);
+}
+.lightbox img {
+  max-height: 80vh;
+  width: auto;
+  margin: 0 auto;
+  border-radius: var(--radius-small);
+}
+.lightbox p {
+  color: #fff;
+  text-align: center;
+  margin-top: 0.75rem;
+  font-weight: 700;
+}
+.lightbox-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 0;
+  background: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+
+/* ---------------------------------------------------------------------
+   9. WHATSAPP CALL-TO-ACTION BAND  (gold band)
+   --------------------------------------------------------------------- */
+.cta-band {
+  background: var(--gold);
+  position: relative;
+  overflow: hidden;
+}
+.cta-band::before {               /* decorative curved shape in the background */
+  content: "";
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  right: -160px;
+  top: -260px;
+}
+.cta-inner {
+  position: relative;             /* sits above the decorative circle */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding-block: 3.5rem;
+}
+.cta-inner h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+.cta-inner p {
+  max-width: 560px;
+  margin-top: 0.5rem;
+  color: var(--blue-dark);
+}
+.cta-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+
+/* ---------------------------------------------------------------------
+   10. CONTACT FORM
+   --------------------------------------------------------------------- */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.3fr; /* info left, form right */
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .contact-grid { grid-template-columns: 1fr; }
+}
+.contact-info h2 {
+  margin-bottom: 1rem;
+}
+.contact-info ul {
+  list-style: none;
+  margin-top: 1.75rem;
+  display: grid;
+  gap: 1.15rem;
+}
+.contact-info li {
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+}
+.contact-icon {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: var(--blue-light);
+  color: var(--blue);
+  display: grid;
+  place-items: center;
+}
+.contact-icon svg { width: 22px; height: 22px; }
+.contact-info strong {
+  display: block;
+  color: var(--blue-dark);
+}
+
+.contact-form {
+  padding: clamp(1.25rem, 4vw, 2.25rem);
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* two fields side by side */
+  gap: 1rem;
+}
+@media (max-width: 560px) {
+  .form-row { grid-template-columns: 1fr; } /* one per line on phones */
+}
+.form-field {
+  margin-bottom: 1.15rem;
+}
+.form-field label {
+  display: block;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+}
+.form-field .optional {
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  min-height: 50px;               /* easy to tap on phones */
+  border: 2px solid var(--line);
+  border-radius: var(--radius-small);
+  background: #fff;
+  font-size: 1rem;                /* 16px+ stops iPhones zooming in on the field */
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-field textarea {
+  min-height: 150px;
+  resize: vertical;               /* user can make it taller, not wider */
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 4px rgba(28, 63, 174, 0.15); /* soft blue glow when typing */
+}
+.form-check {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  font-size: 0.92rem;
+  margin-bottom: 1.25rem;
+}
+.form-check input {
+  width: 20px;
+  height: 20px;
+  margin-top: 0.2rem;
+  accent-color: var(--blue);      /* blue checkbox tick */
+  flex-shrink: 0;
+}
+.form-honeypot {
+  display: none;                  /* hidden trap field that only spam robots fill in */
+}
+.form-status {                    /* success / error message after sending */
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-small);
+  font-weight: 700;
+}
+.form-status:empty {
+  display: none;                  /* hidden until there is a message */
+}
+.form-status.is-success { background: #d6f5e3; color: #146b3a; }
+.form-status.is-error   { background: #ffe0e0; color: #a3161d; }
+.contact-form .btn {
+  width: 100%;
+}
+
+.contact-phone {
+  display: block;                 /* each phone number on its own line */
+}
